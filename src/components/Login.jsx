@@ -6,11 +6,11 @@ const Login = () => {
       <form>
         <label>
           Email:
-          <input type="text" />
+          <input type="email" placeholder="email" />
         </label>
         <label>
           Password:
-          <input type="password" />
+          <input type="password" placeholder="password"/>
         </label>
         <button>Login</button>
       </form>
