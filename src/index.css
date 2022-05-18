@@ -812,6 +812,11 @@ button:hover,
   color: #ffffff;
   text-decoration: none;
 }
+.button:disabled,
+a.button:disabled,
+button:disabled {
+  background: #7896c1;
+}
 
 .button:focus,
 .button:active,

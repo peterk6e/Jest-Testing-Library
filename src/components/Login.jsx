@@ -12,7 +12,7 @@ const Login = () => {
           Password:
           <input type="password" placeholder="password"/>
         </label>
-        <button>Login</button>
+        <button disabled="true" >Login</button>
       </form>
     </div>
   );

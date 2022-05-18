@@ -31,4 +31,10 @@ describe("Login component", () => {
     const passwordInputElement = screen.getByPlaceholderText(/password/i);
     expect(passwordInputElement.value).toBe("");
   });
+
+  test("login button should be disabled", () => {
+    render(<Login />);
+    const loginButtonElement = screen.getByRole("button");
+    expect(loginButtonElement).toBeDisabled();
+  });
 });
