@@ -1,4 +1,4 @@
-import { getByRole, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Login from "./Login";
 
 describe("Login component", () => {
@@ -43,5 +43,35 @@ describe("Login component", () => {
     const errMessageElement = screen.getByText(/oops/i);
     expect(errMessageElement).not.toBeVisible();
   });
-  
+  //
+
+  test("email input value should change", () => {
+    render(<Login />);
+    const emailInputElement = screen.getByPlaceholderText(/email/i);
+    const testValue = "test";
+    fireEvent.change(emailInputElement, {target: {value: testValue}})
+    expect(emailInputElement.value).toBe(testValue);
+  });
+
+  test("password input value should change", () => {
+    render(<Login />);
+    const testValue = "test";
+    const passwordInputElement = screen.getByPlaceholderText(/password/i);
+    fireEvent.change(passwordInputElement, {target: {value: testValue}})
+    expect(passwordInputElement.value).toBe(testValue);
+  });
+
+  test("login button should not be disabled when inputs exist", () => {
+    render(<Login />);
+    const loginButtonElement = screen.getByRole("button");
+    const passwordInputElement = screen.getByPlaceholderText(/password/i);
+    const emailInputElement = screen.getByPlaceholderText(/email/i);
+
+    const testValue = "test";
+    
+    fireEvent.change(emailInputElement, {target: {value: testValue}})
+    fireEvent.change(passwordInputElement, {target: {value: testValue}})
+
+    expect(loginButtonElement).not.toBeDisabled();
+  });
 });
