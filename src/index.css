@@ -1115,6 +1115,11 @@ caption {
   overflow-x: auto;
 }
 
+.error {
+  color: rgb(202, 12, 12);
+  text-align: center;
+}
+
 @media (min-width: 600px) {
   .contain-table {
     width: 100%;

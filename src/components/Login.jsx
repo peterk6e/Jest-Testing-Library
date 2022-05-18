@@ -1,7 +1,10 @@
 import React from "react";
+import { useState } from "react";
 
 const Login = () => {
-  return (
+  const [error, setError] = useState(false)
+
+    return (
     <div>
       <form>
         <label>
@@ -10,9 +13,10 @@ const Login = () => {
         </label>
         <label>
           Password:
-          <input type="password" placeholder="password"/>
+          <input type="password" placeholder="password" />
         </label>
-        <button disabled="true" >Login</button>
+        <button disabled="true">Login</button>
+        <div className="error" style={{visibility: error? "visible" : "hidden"}}>Oops, something went wrong</div>
       </form>
     </div>
   );

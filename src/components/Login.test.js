@@ -37,4 +37,11 @@ describe("Login component", () => {
     const loginButtonElement = screen.getByRole("button");
     expect(loginButtonElement).toBeDisabled();
   });
+
+  test("error message should not be visible", () => {
+    render(<Login />);
+    const errMessageElement = screen.getByText(/oops/i);
+    expect(errMessageElement).not.toBeVisible();
+  });
+  
 });
