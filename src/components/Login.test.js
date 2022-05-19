@@ -128,4 +128,21 @@ describe("Login component", () => {
       expect(loginButtonElement).not.toHaveTextContent(/please wait/i)
     );
   });
+
+  test("user should rendered after fetching", async () => {
+    render(<Login />);
+    const loginButtonElement = screen.getByRole("button");
+    const passwordInputElement = screen.getByPlaceholderText(/password/i);
+    const emailInputElement = screen.getByPlaceholderText(/email/i);
+
+    const testValue = "test";
+
+    fireEvent.change(emailInputElement, { target: { value: testValue } });
+    fireEvent.change(passwordInputElement, { target: { value: testValue } });
+    fireEvent.click(loginButtonElement);
+
+    const useritem = await screen.findByText("john");
+
+    expect(useritem).toBeInTheDocument();
+  });
 });
