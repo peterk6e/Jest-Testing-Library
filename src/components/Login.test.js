@@ -1,5 +1,21 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { __esModule } from "@testing-library/jest-dom/dist/matchers";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Login from "./Login";
+
+jest.mock("axios", () => ({
+  __esModule: true,
+
+  default: {
+    get: () => ({
+      data: {
+        id: 1,
+        name: "john",
+        email: "john@test.com",
+        password: "1234567890",
+      },
+    }),
+  },
+}));
 
 describe("Login component", () => {
   test("email input should be rendered", () => {
@@ -49,7 +65,7 @@ describe("Login component", () => {
     render(<Login />);
     const emailInputElement = screen.getByPlaceholderText(/email/i);
     const testValue = "test";
-    fireEvent.change(emailInputElement, {target: {value: testValue}})
+    fireEvent.change(emailInputElement, { target: { value: testValue } });
     expect(emailInputElement.value).toBe(testValue);
   });
 
@@ -57,7 +73,7 @@ describe("Login component", () => {
     render(<Login />);
     const testValue = "test";
     const passwordInputElement = screen.getByPlaceholderText(/password/i);
-    fireEvent.change(passwordInputElement, {target: {value: testValue}})
+    fireEvent.change(passwordInputElement, { target: { value: testValue } });
     expect(passwordInputElement.value).toBe(testValue);
   });
 
@@ -68,10 +84,48 @@ describe("Login component", () => {
     const emailInputElement = screen.getByPlaceholderText(/email/i);
 
     const testValue = "test";
-    
-    fireEvent.change(emailInputElement, {target: {value: testValue}})
-    fireEvent.change(passwordInputElement, {target: {value: testValue}})
+
+    fireEvent.change(emailInputElement, { target: { value: testValue } });
+    fireEvent.change(passwordInputElement, { target: { value: testValue } });
 
     expect(loginButtonElement).not.toBeDisabled();
+  });
+
+  test("loading should not be rendered", () => {
+    render(<Login />);
+    const loginButtonElement = screen.getByRole("button");
+    expect(loginButtonElement).not.toHaveTextContent(/please wait/i);
+  });
+
+  test("loading should be rendered when click on Login", () => {
+    render(<Login />);
+    const loginButtonElement = screen.getByRole("button");
+    const passwordInputElement = screen.getByPlaceholderText(/password/i);
+    const emailInputElement = screen.getByPlaceholderText(/email/i);
+
+    const testValue = "test";
+
+    fireEvent.change(emailInputElement, { target: { value: testValue } });
+    fireEvent.change(passwordInputElement, { target: { value: testValue } });
+    fireEvent.click(loginButtonElement);
+
+    expect(loginButtonElement).toHaveTextContent(/please wait/i);
+  });
+
+  test("loading should not be visible after fetching", async () => {
+    render(<Login />);
+    const loginButtonElement = screen.getByRole("button");
+    const passwordInputElement = screen.getByPlaceholderText(/password/i);
+    const emailInputElement = screen.getByPlaceholderText(/email/i);
+
+    const testValue = "test";
+
+    fireEvent.change(emailInputElement, { target: { value: testValue } });
+    fireEvent.change(passwordInputElement, { target: { value: testValue } });
+    fireEvent.click(loginButtonElement);
+
+    await waitFor(() =>
+      expect(loginButtonElement).not.toHaveTextContent(/please wait/i)
+    );
   });
 });
